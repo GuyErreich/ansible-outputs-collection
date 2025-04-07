@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Ansible & ansible-lint
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint
+
+      - name: Lint collection
+        run: ansible-lint plugins/
+
+      - name: Build collection
+        run: ansible-galaxy collection build
+
+      - name: Install built collection
+        run: |
+          FILE=$(ls gerreich-*.tar.gz | head -n 1)
+          ansible-galaxy collection install "$FILE"
+
+      - name: Run test playbook
+        run: |
+          mkdir test_project
+          cd test_project
+          echo "
+          - name: Test callback plugin
+            hosts: localhost
+            gather_facts: false
+            tasks:
+              - name: Multiline debug
+                debug:
+                  msg: |
+                    Hello
+                    Multiline
+                    Output
+
+              - name: Fail gracefully
+                fail:
+                  msg: |
+                    This is a test failure
+                    With clean formatting
+
+              - name: Skipped task
+                debug:
+                  msg: Will be skipped
+                when: false
+          " > test.yml
+
+          echo '
+          [defaults]
+          stdout_callback = gerreich.tools.default_with_clean_msg
+          ' > ansible.cfg
+
+          ansible-playbook test.yml
+

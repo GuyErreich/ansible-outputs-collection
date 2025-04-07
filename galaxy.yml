@@ -1,0 +1,8 @@
+namespace: gerreich
+name: tools
+version: "0.0.1"
+readme: README.md
+authors:
+  - Guy Erreich
+description: A brief description of the tools.
+repository: https://github.com/gerreich/tools
