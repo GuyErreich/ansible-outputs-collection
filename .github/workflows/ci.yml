@@ -24,7 +24,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build and install the collection
-        working-directory: gerreich/tools
         run: |
           ansible-galaxy collection build
           FILE=$(ls gerreich-*.tar.gz | head -n 1)
