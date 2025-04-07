@@ -4,5 +4,22 @@ version: "0.0.1"
 readme: README.md
 authors:
   - Guy Erreich
-description: A brief description of the tools.
+description: Tools & Utils.
+license: 
+ - GPL-3.0-or-later
+license_file: LICENSE
+tags:
+  - callback
+  - formatting
+  - plugins
 repository: https://github.com/gerreich/tools
+
+build_ignore:
+  - .github/
+  - tests/
+  - .gitignore
+  - .pytest_cache/
+  - __pycache__/
+  - .DS_Store
+  - '*.log'
+  - '*.tar.gz'
