@@ -1,0 +1,7 @@
+requires_ansible: ">=2.16.0"
+plugin_routing:
+  callback:
+    clean_msg:
+      redirect: gerreich.clean_msg.default_with_clean_msg
+import_redirection: {}
+action_groups: {}

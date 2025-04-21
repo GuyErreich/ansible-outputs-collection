@@ -1,0 +1,4 @@
+plugins/callback/default_with_clean_msg.py ansible-doc!skip
+plugins/callback/default_with_clean_msg.py validate-modules!skip
+plugins/callback/default_with_clean_msg.py replace-urlopen!skip
+plugins/callback/default_with_clean_msg.py use-compat-six!skip

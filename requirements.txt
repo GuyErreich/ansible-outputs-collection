@@ -1,2 +1,2 @@
-ansible
-pytest
+pytest>=8.0
+

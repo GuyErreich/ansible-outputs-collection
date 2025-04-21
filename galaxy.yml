@@ -1,18 +1,19 @@
 namespace: gerreich
-name: tools
-version: "0.0.1"
+name: outputs
+version: "1.0.0"
 readme: README.md
 authors:
-  - Guy Erreich
-description: Tools & Utils.
+  - Guy Erreich <gerreich.dev@gmail.com>
+description: Outsput formatting solutions for Galaxy.
 license: 
  - GPL-3.0-or-later
 license_file: LICENSE
 tags:
   - callback
-  - formatting
   - plugins
-repository: https://github.com/gerreich/tools
+  - output
+  - formatting
+repository: https://github.com/ansible-outputs-collection
 
 build_ignore:
   - .github/
@@ -23,3 +24,5 @@ build_ignore:
   - .DS_Store
   - '*.log'
   - '*.tar.gz'
+  - .venv/
+  - .venv/**

@@ -1,12 +1,13 @@
-from ansible.plugins.callback.default import CallbackModule as DefaultCallback
-from ansible.utils.display import Display
-from ansible import constants as C
+# Copyright (c) 2012-2014, Michael DeHaan <michael.dehaan@gmail.com>
+# Copyright (c) 2017, Ansible Project
+# Copyright (c) 2024–2025, Guy Erreich <gerreich.dev@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = '''
     name: default_with_clean_msg
     type: stdout
     short_description: Default callback with clean multiline msg support
-    version_added: "custom"
+    version_added: "0.0.1"
     description:
         - Subclass of the default callback plugin that prints msg values as boxed multiline output.
     extends_documentation_fragment:
@@ -14,8 +15,11 @@ DOCUMENTATION = '''
       - result_format_callback
 '''
 
-class CallbackModule(DefaultCallback):
+from ansible.plugins.callback.default import CallbackModule as DefaultCallback
+from ansible import constants as C
 
+
+class CallbackModule(DefaultCallback):
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
     CALLBACK_NAME = 'default_with_clean_msg'
@@ -30,7 +34,7 @@ class CallbackModule(DefaultCallback):
         if result.is_failed():
             return C.COLOR_ERROR
         return C.COLOR_OK
-    
+
     def _is_only_msg(self, result):
         # These are keys we want to ignore for the purpose of "message-only" detection
         internal_keys = {
@@ -52,6 +56,7 @@ class CallbackModule(DefaultCallback):
         return keys == ['msg']
 
     def _print_clean_msg(self, result, color=None):
+        # self._display.display(f"DEBUG keys: {list(result._result.keys())}", color=color)
         if color is None:
             color = C.COLOR_CHANGED if result._result.get('changed', False) else C.COLOR_OK
 
@@ -70,11 +75,21 @@ class CallbackModule(DefaultCallback):
 
             border = "=" * max_len
             label_border = prefix + label + suffix
-            
+
             self._display.display(f"\n{label_border}", color=color)
+            # self._display.display(f"\n>>> DEBUG: START {label_border}", color=color)
             for line in lines:
                 self._display.display(line, color=color)
             self._display.display(f"{border}\n", color=color)
+            # self._display.display(">>> DEBUG: END", color=color)
+
+        try:
+            with open("/tmp/debug_callback.log", "a") as f:
+                f.write("== Message Output START ==\n")
+                f.write(f"{result._result.get('msg')}\n")
+                f.write("== Message Output END ==\n")
+        except Exception as e:
+            pass
 
     def v2_runner_on_ok(self, result):
         is_changed = result._result.get('changed', False)
