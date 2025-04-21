@@ -6,6 +6,9 @@ on:
       - dev
   pull_request:
 
+env:
+  COLLECTION_PATH: $HOME/.ansible/collections/ansible_collections/gerreich/outputs
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -19,12 +22,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Initialize Ansible
+      - name: Initialize
         run: |
           sudo apt-get update
           sudo apt-get install -y make
           make init
           make install
+
+          echo "HOME=$HOME" >> $GITHUB_ENV
 
       - name: Build and install the collection
         run: |
@@ -33,14 +38,14 @@ jobs:
           ansible-galaxy collection install "$FILE"
 
       - name: Run sanity tests
-        working-directory: ~/.ansible/collections/ansible_collections/gerreich/outputs
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
         run: make sanity
 
       - name: Run unit tests
-        working-directory: ~/.ansible/collections/ansible_collections/gerreich/outputs
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
         run: make unit
 
       - name: Run linting (ansible-lint & yamllint)
-        working-directory: ~/.ansible/collections/ansible_collections/gerreich/outputs
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
         run: |
           make lint
