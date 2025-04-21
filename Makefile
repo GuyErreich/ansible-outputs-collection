@@ -11,7 +11,7 @@ init:
 	@echo "Installing pipx..."
 	sudo apt install -y pipx
 	pipx ensurepath
-	
+
 	@echo "Installing ansible..."
 	pipx install --include-deps ansible
 
@@ -37,8 +37,7 @@ unit:
 	ansible-test units --docker --color yes --requirements --coverage
 
 lint:
-	$(packages)/ansible-lint .
-	$(packages)/yamllint .
+	ansible-lint .
 
 clean:
 	rm -rf $(VENV) __pycache__ .pytest_cache
