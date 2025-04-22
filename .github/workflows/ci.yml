@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - dev
+  pull_request:
+
+env:
+  COLLECTION_PATH: $HOME/.ansible/collections/ansible_collections/gerreich/outputs
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Initialize
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make
+          make init
+          make install
+
+          echo "HOME=$HOME" >> $GITHUB_ENV
+
+      - name: Build and install the collection
+        run: |
+          ansible-galaxy collection build
+          FILE=$(ls gerreich-*.tar.gz | head -n 1)
+          ansible-galaxy collection install "$FILE"
+
+      - name: Run sanity tests
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
+        run: make sanity
+
+      - name: Run unit tests
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
+        run: make unit
+
+      - name: Run linting (ansible-lint & yamllint)
+        working-directory: ${{ env.HOME }}/.ansible/collections/ansible_collections/gerreich/outputs
+        run: |
+          make lint

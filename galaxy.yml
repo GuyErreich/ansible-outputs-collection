@@ -1,0 +1,28 @@
+namespace: gerreich
+name: outputs
+version: "1.0.0"
+readme: README.md
+authors:
+  - Guy Erreich <gerreich.dev@gmail.com>
+description: Outsput formatting solutions for Galaxy.
+license: 
+ - GPL-3.0-or-later
+license_file: LICENSE
+tags:
+  - callback
+  - plugins
+  - output
+  - formatting
+repository: https://github.com/ansible-outputs-collection
+
+build_ignore:
+  - .github/
+  - tests/
+  - .gitignore
+  - .pytest_cache/
+  - __pycache__/
+  - .DS_Store
+  - '*.log'
+  - '*.tar.gz'
+  - .venv/
+  - .venv/**
