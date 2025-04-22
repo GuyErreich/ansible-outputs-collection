@@ -1,0 +1,24 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "simple",
+            "include-v-in-tag": true,
+            "bump-minor-pre-major": true,
+            "branches": [
+                {
+                    "branch": "dev",
+                    "pre-release": true,
+                    "prerelease-label": "dev"
+                },
+                {
+                    "branch": "staging",
+                    "pre-release": true,
+                    "prerelease-label": "staging"
+                },
+                {
+                    "branch": "main"
+                }
+            ]
+        }
+    }
+}
