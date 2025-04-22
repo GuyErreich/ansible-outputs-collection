@@ -1,24 +1,26 @@
 {
-    "packages": {
-        ".": {
-            "release-type": "simple",
-            "include-v-in-tag": true,
-            "bump-minor-pre-major": true,
-            "branches": [
-                {
-                    "branch": "dev",
-                    "pre-release": true,
-                    "prerelease-label": "dev"
-                },
-                {
-                    "branch": "staging",
-                    "pre-release": true,
-                    "prerelease-label": "staging"
-                },
-                {
-                    "branch": "main"
-                }
-            ]
-        }
+  "include-v-in-tag": true,
+  "bump-minor-pre-major": true,
+  "branches": [
+    {
+      "branch": "dev",
+      "pre-release": true,
+      "prerelease-label": "dev"
+    },
+    {
+      "branch": "staging",
+      "pre-release": true,
+      "prerelease-label": "staging"
+    },
+    {
+      "branch": "main"
     }
+  ],
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "version-file": "galaxy.yml",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
 }
